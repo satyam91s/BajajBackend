@@ -16,26 +16,22 @@ public class HealthController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            // Extract "data" and "file_b64" from the request body
+           
             List<String> data = (List<String>) request.get("data");
             String fileBase64 = (String) request.get("file_b64");
 
-            // Separate numbers and alphabets from the data array
             List<String> numbers = data.stream().filter(s -> s.matches("\\d+")).collect(Collectors.toList());
             List<String> alphabets = data.stream().filter(s -> s.matches("[a-zA-Z]")).collect(Collectors.toList());
 
-            // Find the highest lowercase letter (last in alphabetical order)
             String highestLowercase = alphabets.stream()
                     .filter(s -> s.equals(s.toLowerCase()))
                     .max(String::compareTo)
                     .orElse("");
 
-            // Check if there are any prime numbers in the numbers array
             boolean isPrimeFound = numbers.stream()
                     .mapToInt(Integer::parseInt)
                     .anyMatch(HealthController::isPrime);
 
-            // File validation
             boolean fileValid = false;
             String mimeType = "";
             double fileSizeKB = 0.0;
@@ -44,14 +40,14 @@ public class HealthController {
                 try {
                     byte[] decodedFile = Base64Utils.decodeFromString(fileBase64);
                     fileValid = true;
-                    mimeType = "application/octet-stream"; // Replace with appropriate MIME type detection
+                    mimeType = "application/octet-stream"; 
                     fileSizeKB = decodedFile.length / 1024.0;
                 } catch (Exception e) {
                     fileValid = false;
                 }
             }
 
-            // Build the response
+            // response
             response.put("is_success", true);
             response.put("user_id", "satyam_dubey_21082000");
             response.put("email", "satyam.dubey@example.com");
